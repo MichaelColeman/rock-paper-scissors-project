@@ -1,8 +1,9 @@
+//------------------------
 // Author: Tommy Coleman
-// Date: 7.22.2022
+// Date created: 7.22.2022
+//------------------------
 
-
-//helper for getComputerChoice()
+// returns a random integer from 0-max
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
@@ -19,52 +20,70 @@ function getComputerChoice() {
   }
 }
 
-function playRound(playerSelection , computerSelection) {
-  
-  let roundResult;  // round result 1 = computer win, 2 = player win, 3 = tie
-  if(playerSelection == "rock") {  //player chooses rock
-    if (computerSelection == "paper") {
-      roundResult = 1; //computer wins
-    } else if(computerSelection == "scissors") {
-      roundResult = 2; //player wins
-    } else {
-      roundResult = 3; //game is a tie
-    }
-  } else if(playerSelection == "paper") {  //player chooses paper
+function playRound(playerSelection, computerSelection) {
+  let roundResult; // round result 0 = incorrect answer 1 = computer win, 2 = player win, 3 = tie
+  let roundResultString;
+  if(playerSelection == computerSelection) {
+    roundResult = 3;         // tie round
+  } else if(playerSelection == "rock") { //player chooses rock
+    if(computerSelection == "paper") {
+      roundResult = 1;      //computer win
+    } else roundResult = 2; //player win
+  } else if(playerSelection == "paper") { //player chooses paper
+    if(computerSelection == "scissors") {
+       roundResult = 1;     //computer win
+    } else roundResult = 2; //player win
+  } else if(playerSelection == "scissors") { //player chooses scissors
     if(computerSelection == "rock") {
-      roundResult = 2; //player wins
-    } else if(computerSelection == "scissors") {
-      roundResult = 1; //computer wins
-    } else {
-      roundResult = 3; //game is a tie
-    }
-  } else if(playerSelection == "scissors") {  //player chooses scissors
-    if(computerSelection == "rock") {
-      roundResult = 1; //computer wins
-    } else if(computerSelection == "paper") {
-      roundResult = 2; //player wins
-    } else {
-      roundResult = 3; //game is a tie
-    }
+      roundResult = 1;      //computer win
+    } else roundResult = 2; //player win
+  } else {
+    ;
+    roundResult == 0;
   }
-  return roundResult; // round result 1 = computer win, 2 = player win, 3 = tie
+  //return a formatted string declaring the winner of the round 
+  if(roundResult == 1) {
+      roundResultString = `You Lose! ${computerSelection} beats ${playerSelection}`;
+  } else if(roundResult == 2) {
+      roundResultString = `You Win! ${playerSelection} beats ${computerSelection}`;
+  } else if(roundResult == 3) {
+      roundResultString = "Round is a tie!";
+  } else {
+      roundResultString = "you have entered an invalid answer!";
+  }
+  
+  //return winner
+  return roundResultString;
 }
 
 function game() {
   let computerScore = 0;
   let playerScore = 0;
-
-  //play "i" number of rounds.
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) { //play "i" number of rounds.
     //display current round
-    console.log(`round ${i}.`);
+    console.log(`round ${i + 1}.`);
     //get player choice
-    const playerSelection = prompt('rock, paper, or scissors?').toLowerCase();
+    const playerSelection = window.prompt(`round ${i + 1}`,'rock, paper, or scissors?').toLowerCase();
     //get computer choice
     const computerSelection = getComputerChoice();
     //play round of rock, paper, scissors
-    playRound(playerSelection, computerSelection);
+    let roundWinner = (playRound(playerSelection, computerSelection));
+
+    if(roundWinner.search("Win")) {
+      playerScore++;
+    } else if(roundWinner.search("Lose")) {
+      computerScore++;
+    } else {
+
+    }
+
+    //display winner in console
+    console.log(roundWinner);
   }
+  //display overall winner
+  //console.log((playerScore > computerScore) ? 'Winner!' : 'Loser!');
+  console.log(playerScore);
+  console.log(computerScore);
 }
 
-console.log();
+game();
