@@ -1,0 +1,49 @@
+html {
+  display: flex;
+}
+
+body {
+  margin: auto;
+}
+
+.textContainer {
+  margin: 25px 0px;
+  border: 2px solid;
+  border-radius: 5px;
+}
+.gameText {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#btnContainer {
+  display: flex;
+  justify-content: space-around;
+}
+#winnerContainer {
+  display: flex;
+  justify-content: center;
+}
+
+#winner  {
+  padding: 10px;
+}
+.choiceBtn {
+  padding: 20px;
+  border-radius: 40px;
+}
+
+:hover.choiceBtn {
+  background-color: aqua;
+}
+
+#results{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#results p {
+  font-size: 34px;
+}
+
