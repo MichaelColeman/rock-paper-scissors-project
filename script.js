@@ -1,3 +1,53 @@
+const playerText = document.querySelector('#playerText');
+const computerText = document.querySelector('#computerText');
+const resultText = document.querySelector('#resultText');
+const winner = document.querySelector('#winner')
+const playerTotal = document.querySelector('#playerTotalScore');
+const computerTotal = document.querySelector('#computerTotalScore');
+
+let playerChoice;
+let computerChoice;
+let playerTotalScore = 0;
+let computerTotalScore = 0;
+
+const buttons = document.querySelectorAll('.choiceBtn'); // buttons is a node list. It looks and acts much like an array.
+
+buttons.forEach((button) => { // we use the .forEach method to iterate through each button
+  button.addEventListener('click', () => {
+    playerChoice = button.textContent;
+    computerChoice = getComputerChoice();
+    roundResult = playRound(playerChoice, computerChoice);
+    switch(roundResult){
+      case 'computer':
+        computerTotalScore++;
+        break;
+      case 'player':
+        playerTotalScore++;
+        break;
+      case 'tie':
+        console.log('tie game');
+    }
+    updateDisplay(roundResult);
+    checkForWinner();
+  });
+});
+
+function checkForWinner(){
+  if (computerTotalScore === 5 || playerTotalScore === 5){
+    if(computerTotalScore > playerTotalScore) {
+      winner.textContent = 'Computer Wins!'
+      console.log('computer wins!')
+      computerTotalScore = 0;
+      playerTotalScore = 0;
+    } else {
+      winner.textContent = 'Player Wins!'
+      console.log('player wins!')
+      computerTotalScore = 0;
+      playerTotalScore = 0;
+    }
+  }
+}
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
@@ -14,57 +64,37 @@ function getComputerChoice() {  // returns either "rock" "paper" or "scissors"
 }
 
 function playRound(playerChoice, computerChoice) {
-  let roundResult;
-  let roundResultString;
-  if(playerChoice == computerChoice) {
-    roundResult = 3;         // tie round
-  } else if(playerChoice == "rock") { //player chooses rock
-    if(computerChoice == "paper") {
-      roundResult = 1;      //computer win
-    } else roundResult = 2; //player win
-  } else if(playerChoice == "paper") { //player chooses paper
-    if(computerChoice == "scissors") {
-       roundResult = 1;     //computer win
-    } else roundResult = 2; //player win
-  } else if(playerChoice == "scissors") { //player chooses scissors
-    if(computerChoice == "rock") {
-      roundResult = 1;      //computer win
-    } else roundResult = 2; //player win
-  } else {
-    roundResult == 0;
-  }
-  if(roundResult == 1) {   //return a formatted string declaring the winner of the round 
-      roundResultString = `You Lose! ${computerChoice} beats ${playerChoice}`;
-  } else if(roundResult == 2) {
-      roundResultString = `You Win! ${playerChoice} beats ${computerChoice}`;
-  } else if(roundResult == 3) {
-      roundResultString = "Round is a tie!";
-  } else {
-      roundResultString = "you have entered an invalid answer!";
-  }
-  return roundResultString;
+  let roundResult = "";
+  if(playerChoice === computerChoice){  //player choses computer choice
+    roundResult = 'tie';
+  } else if(playerChoice === 'rock'){ //player rock
+      if(computerChoice === 'paper'){
+        roundResult = 'computer'; 
+      } else {
+          roundResult = 'player';
+        }
+      }
+    else if(playerChoice === 'paper'){ //player paper
+      if(computerChoice === 'scissors'){
+        roundResult = 'computer'; 
+      } else {
+          roundResult = 'player';
+        }
+      }
+    else if(playerChoice === 'scissors'){ //player scissors
+      if(computerChoice === 'rock'){
+        roundResult = 'computer'; 
+      } else {
+          roundResult = 'player';
+        }
+      }
+  return roundResult;
 }
 
-function game() {
-  let computerScore = 0;
-  let playerScore = 0;
-  for (let i = 0; i < 5; i++) { //play "i" number of rounds.
-    console.log(`round ${i + 1}.`);
-    const playerChoice = window.prompt('rock, paper, or scissors?').toLowerCase();
-    const computerChoice = getComputerChoice();
-    let roundWinner = (playRound(playerChoice, computerChoice));
-    if(roundWinner.search("Win") != -1) {
-      playerScore++;
-    } else if(roundWinner.search("Lose") != -1) {
-      computerScore++;
-    }
-    console.log(roundWinner);
-  }
-  //display overall winner
-  if(playerScore !== computerScore) {
-   console.log((playerScore > computerScore) ? 'Winner!' : 'Loser!');
- } else {
-   console.log('Game is a tie');
- }
+function updateDisplay(roundResult) {
+  playerText.textContent = `Player: ${playerChoice}`;
+  computerText.textContent = `Computer: ${computerChoice}`;
+  resultText.textContent = `Winner: ${roundResult}`
+  playerTotal.textContent = playerTotalScore;
+  computerTotal.textContent = computerTotalScore;
 }
-game();
